@@ -28,6 +28,11 @@ class Cell
         return $this->coords;
     }
 
+    public function setCoords($coords)
+    {
+        return $this->coords = $coords;
+    }
+
     public function getPiece()
     {
         return $this->piece->getName();

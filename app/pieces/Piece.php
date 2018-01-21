@@ -1,8 +1,6 @@
 <?php
 namespace App\Pieces;
 
-use App\Board\Cell;
-
 class Piece
 {
     protected $name;

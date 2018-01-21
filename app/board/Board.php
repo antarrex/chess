@@ -9,8 +9,8 @@ class Board
     const DEFAULT_SIZE = 8;
 
     private $size;
-    private $occupiedCells = [];
     private $storage;
+    private $occupiedCells = [];
 
     public function __construct(StorageInterface $storage, $size = self::DEFAULT_SIZE)
     {
@@ -21,6 +21,9 @@ class Board
     public function add($name, $coords)
     {
         try {
+            if (array_key_exists($coords, $this->occupiedCells)) {
+                throw new \Exception('This cell is already occupied!');
+            }
             $this->validateCoords($coords);
         } catch (\Exception $e) {
             echo "Error: {$e->getMessage()}" . PHP_EOL;
@@ -32,17 +35,33 @@ class Board
         $this->occupiedCells[$coords] = $cell;
     }
 
+    public function move($from, $to)
+    {
+        try {
+            $this->validateCoords($to);
+        } catch (\Exception $e) {
+            echo "Error: {$e->getMessage()}" . PHP_EOL;
+            return;
+        }
+
+        $this->occupiedCells[$to] = clone $this->occupiedCells[$from];
+        $this->occupiedCells[$to]->setCoords($to);
+        unset($this->occupiedCells[$from]);
+    }
+
     public function remove($coords)
     {
+        try {
+            $this->validateCoords($coords);
+        } catch (\Exception $e) {
+            echo "Error: {$e->getMessage()}" . PHP_EOL;
+            return;
+        }
         $this->occupiedCells[$coords] = null;
     }
 
     public function validateCoords($coords)
     {
-        if (array_key_exists($coords, $this->occupiedCells)) {
-            throw new \Exception('This cell is already occupied!');
-        }
-
         $letters = 'abcdefghijklmnoqrstuvwxyz';
         $pattern = "/^[a-{$letters[$this->size - 1]}][1-{$this->size}]$/i";
         preg_match($pattern, $coords, $matches);
@@ -70,7 +89,6 @@ class Board
         foreach ($this->occupiedCells as $cell) {
             $data[$cell->getCoords()] = $cell->getPiece();
         }
-
         $this->storage->save(json_encode($data));
     }
 

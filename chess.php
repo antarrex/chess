@@ -13,6 +13,9 @@ example - 'remove A1'
 
 move <cell_from> <cell_to>
 example - 'move A1 C3'
+
+save - saves current board state
+load - load last saved state
 type 'exit' to end the game
 " . PHP_EOL;
 
@@ -26,6 +29,13 @@ while (true) {
         $board->add($input[1], $input[2]);
     }
 
+    if (in_array('remove', $input)) {
+        $board->remove($input[1]);
+    }
+
+    if (in_array('move', $input)) {
+        $board->move($input[1], $input[2]);
+    }
 
     if (in_array('save', $input)) {
         $board->save();
