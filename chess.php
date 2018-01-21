@@ -2,9 +2,17 @@
 require 'vendor/autoload.php';
 
 use App\Board\Board;
-
+use \App\Storage\FileStorage;
 echo "
-Welcome to console chess board! Available commands:
+Welcome to console chess board!
+Allowed pice names:
+    'king',
+    'queen',
+    'rook',
+    'bishop',
+    'knight',
+    'pawn'
+Available commands:
 add <piece> <cell>
 example - 'add bishop A1'
 
@@ -19,7 +27,7 @@ load - load last saved state
 type 'exit' to end the game
 " . PHP_EOL;
 
-$board = new Board(new \App\Storage\FileStorage);
+$board = new Board(new FileStorage);
 while (true) {
     $board->printState();
 

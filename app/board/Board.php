@@ -31,7 +31,13 @@ class Board
         }
 
         $cell = new Cell($coords);
-        $cell->attach(new Piece($name));
+        try {
+            $piece = new Piece($name);
+        } catch (\Exception $e) {
+            echo "Error: {$e->getMessage()}" . PHP_EOL;
+            return;
+        }
+        $cell->attach($piece);
         $this->occupiedCells[$coords] = $cell;
     }
 
@@ -77,11 +83,6 @@ class Board
 
     public function printState()
     {
-        if (empty($this->occupiedCells)) {
-            print 'Board is empty' . PHP_EOL;
-            return;
-        }
-
         print 'Current board state:' . PHP_EOL;
         foreach ($this->occupiedCells as $cell) {
             print $cell;
