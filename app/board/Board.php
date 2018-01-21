@@ -18,7 +18,7 @@ class Board
         $this->size = $size;
     }
 
-    public function add($name, $coords)
+    public function add($name, $coords, Callable $callback = null)
     {
         try {
             if (array_key_exists($coords, $this->occupiedCells)) {
@@ -39,6 +39,10 @@ class Board
         }
         $cell->attach($piece);
         $this->occupiedCells[$coords] = $cell;
+
+        if (isset($callback)) {
+            $callback();
+        }
     }
 
     public function move($from, $to)

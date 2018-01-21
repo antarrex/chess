@@ -5,7 +5,7 @@ use App\Board\Board;
 use \App\Storage\FileStorage;
 echo "
 Welcome to console chess board!
-Allowed pice names:
+Allowed piece names:
     'king',
     'queen',
     'rook',
@@ -28,6 +28,7 @@ type 'exit' to end the game
 " . PHP_EOL;
 
 $board = new Board(new FileStorage);
+
 while (true) {
     $board->printState();
 
