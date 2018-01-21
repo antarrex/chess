@@ -14,8 +14,8 @@ class Board
 
     public function __construct(StorageInterface $storage, $size = self::DEFAULT_SIZE)
     {
-        $this->size = $size;
         $this->storage = $storage;
+        $this->size = $size;
     }
 
     public function add($name, $coords)
@@ -63,9 +63,14 @@ class Board
     public function validateCoords($coords)
     {
         $letters = 'abcdefghijklmnoqrstuvwxyz';
-        $pattern = "/^[a-{$letters[$this->size - 1]}][1-{$this->size}]$/i";
+        $pattern = "/^([a-z])([0-9]+)$/i";
         preg_match($pattern, $coords, $matches);
+
         if (!$matches) {
+            throw new \Exception('Invalid input');
+        }
+        if ($matches[1] > $letters[$this->size - 1] ||
+            $matches[2] > $this->size) {
             throw new \Exception('Entered cell is out of board range');
         }
     }
